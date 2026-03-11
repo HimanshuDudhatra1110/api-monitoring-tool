@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import healthRouter from "./routes/healthRoute.js";
 import monitorRoutes from "./routes/apiMonitorRoute.js";
+import { scheduledMonitoringCron } from "./services/automationsUtility.js";
 
 dotenv.config();
 
@@ -44,6 +45,9 @@ const connectWithRetry = async (retries = 5): Promise<void> => {
 
 const startServer = async () => {
   await connectWithRetry(5);
+
+  // Start scheduled monitoring
+  scheduledMonitoringCron();
 
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

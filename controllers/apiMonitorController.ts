@@ -6,6 +6,9 @@ import { performApiCheck } from "../services/apiCheckerService.js";
 export const createMonitor = async (req: Request, res: Response) => {
   try {
     const monitor = await ApiMonitor.create(req.body);
+
+    await performApiCheck(monitor);
+
     return res.status(201).json({ success: true, data: monitor });
   } catch (err) {
     console.error("Error in createMonitor : ", err);
